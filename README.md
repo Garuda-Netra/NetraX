@@ -14,19 +14,19 @@ This project is intended **exclusively for authorized security testing and educa
 
 ## Features
 
-- **Front-camera capture** â€” continuously grabs snapshots from the target's webcam or phone front camera
-- **GPS location tracking** â€” captures latitude, longitude, accuracy, and a live Google Maps link
-- **Gift claim lure** â€” decoy templates include a "Claim Your Celebration Gift" form that collects Full Name, Email, Phone, Date of Birth, Aadhaar, and Delivery Address for identity verification
-- **CSRF protection** â€” per-session tokens on the gift form prevent cross-site request forgery
-- **Centralized data storage** â€” all logs, location files, captures, and submissions are organized inside `/data/`
+- **Front-camera capture** continuously grabs snapshots from the target's webcam or phone front camera
+- **GPS location tracking** captures latitude, longitude, accuracy, and a live Google Maps link
+- **Gift claim lure** decoy templates include a "Claim Your Celebration Gift" form that collects Full Name, Email, Phone, Date of Birth, Aadhaar, and Delivery Address for identity verification
+- **CSRF protection** per-session tokens on the gift form prevent cross-site request forgery
+- **Centralized data storage** all logs, location files, captures, and submissions are organized inside `/data/`
 - **Three decoy templates:**
   - Season's Greetings page
   - YouTube Live Stream page
   - Online Conference / Conference Room page
-- **Dual tunnel support** â€” Ngrok and CloudFlare Tunnel
-- **Cross-platform** â€” Kali Linux, Ubuntu, Parrot OS, Termux (Android), macOS (Intel & Apple Silicon), Windows (WSL)
-- **Cleanup script** â€” removes all captured images, logs, form submissions, and temporary files in one command
-- **Architecture auto-detection** â€” x86\_64, x86, ARM64, ARMv7, Apple Silicon (M1/M2/M3)
+- **Dual tunnel support** Ngrok and CloudFlare Tunnel
+- **Cross-platform** Kali Linux, Ubuntu, Parrot OS, Termux (Android), macOS (Intel & Apple Silicon), Windows (WSL)
+- **Cleanup script** removes all captured images, logs, form submissions, and temporary files in one command
+- **Architecture auto-detection** x86\_64, x86, ARM64, ARMv7, Apple Silicon (M1/M2/M3)
 
 ---
 
@@ -58,14 +58,14 @@ bash netraX.sh
 
 On launch, the tool will prompt you to:
 
-1. **Choose a tunnel server** â€” `[01] Ngrok` or `[02] CloudFlare Tunnel`
-2. **Choose a decoy template** â€” Season's Greetings, YouTube Streaming, or Online Conference
+1. **Choose a tunnel server** `[01] Ngrok` or `[02] CloudFlare Tunnel`
+2. **Choose a decoy template** Season's Greetings, YouTube Streaming, or Online Conference
 3. Provide any required input (festival name, YouTube video ID, etc.)
 
 The tool then:
 - Starts a local PHP server on `127.0.0.1:3333`
 - Launches the selected tunnel and retrieves a public URL
-- Displays the shareable link â€” send it to the target
+- Displays the shareable link send it to the target
 - Waits and prints captured IP, camera images, and GPS location as they arrive
 
 ### Clean Up Logs & Captured Files
