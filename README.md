@@ -86,7 +86,7 @@ Each decoy template includes a **"Claim Your Celebration Gift"** section that pr
 |---|---|
 | Full Name | Required, min. 2 characters |
 | Email Address | Required, valid format |
-| Phone Number | Required, 10â€“15 digits |
+| Phone Number | Required; 10,15 digits |
 | **Date of Birth** | Required, valid past date, within 120 years |
 | Aadhaar Number | Required, exactly 12 digits |
 | Delivery Address | Required, min. 10 characters |
