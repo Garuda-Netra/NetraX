@@ -78,7 +78,7 @@ bash cleanup.sh
 
 ---
 
-## ðŸ”¹ Gift Request Form
+## Gift Request Form
 
 Each decoy template includes a **"Claim Your Celebration Gift"** section that prompts the target to enter their own details to receive a gift. The form collects:
 
@@ -132,7 +132,7 @@ NetraX/
 
 ---
 
-## ðŸ”¹ Tested Platforms
+## Tested Platforms
 
 | Platform        | Status    |
 |-----------------|-----------|
@@ -146,7 +146,7 @@ NetraX/
 
 ---
 
-## ðŸ”¹ Changelog
+## Changelog
 
 | Version | Highlights |
 |---------|------------|
@@ -162,7 +162,7 @@ NetraX/
 
 ---
 
-## ðŸ”¹ Disclaimer
+## Disclaimer
 
 > **This tool is provided for educational and authorized penetration testing purposes only.**
 >
@@ -173,7 +173,7 @@ NetraX/
 
 ---
 
-## ðŸ”¹ Author
+## Author
 
 ```
 --------------------------------------------------
