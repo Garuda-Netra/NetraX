@@ -1,11 +1,12 @@
 ﻿# NetraX
 > A professional tool for authorized penetration testing that captures webcam images and GPS coordinates from a target device by serving a believable decoy page over an internet-exposed tunnel.
----
+ 
+
 ## About the Project
 **NetraX** spins up a local PHP web server, wraps it in a public tunnel (Ngrok or Cloudflare), and hands you a shareable link. When the target opens the link and grants camera/location permission, the tool quietly collects front-camera snapshots and GPS coordinates in real time — all organized neatly under the `data/` directory.
 This project is intended **exclusively for authorized security testing and educational purposes**. Never use it on anyone without explicit written permission.
 
----
+
 ## Features
 - **Front-camera capture** — continuously grabs snapshots from the target's webcam or phone front camera
 - **GPS location tracking** — captures latitude, longitude, accuracy, and a live Google Maps link
@@ -36,6 +37,7 @@ Cloudflare Quick Tunnels are completely free with no account required, work behi
 **Does it touch your system?**
 No. NetraX downloads `cloudflared` directly into the project folder only. It never modifies system paths, package managers, or any global configuration.
 ---
+
 ## Installing cloudflared
 ### Option A — Let NetraX handle it automatically (recommended)
 You do not have to do anything. When you run `bash netraX.sh` and choose the CloudFlare Tunnel option, the script will:
@@ -60,6 +62,9 @@ wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudfla
 
 # Make it executable — this step is required
 chmod +x cloudflared
+
+# Make it executable - this step is required to run netraX.sh
+chmod + netraX.sh
 ```
 
 #### macOS
@@ -68,17 +73,20 @@ chmod +x cloudflared
 wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-arm64.tgz -O cloudflared.tgz
 tar -xzf cloudflared.tgz && rm cloudflared.tgz
 chmod +x cloudflared
+chmod + netraX.sh
 
 # Intel Mac
 wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-darwin-amd64.tgz -O cloudflared.tgz
 tar -xzf cloudflared.tgz && rm cloudflared.tgz
 chmod +x cloudflared
+chmod + netraX.sh
 ```
 
 #### Windows (WSL / Git Bash / MSYS2)
 ```bash
 wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-windows-amd64.exe -O cloudflared.exe
 chmod +x cloudflared.exe
+chmod +x netraX.sh
 ```
 
 > **Important:** Always run `chmod +x cloudflared` (or `chmod +x cloudflared.exe` on Windows) after downloading.
@@ -111,11 +119,14 @@ apt-get -y install php wget
 # macOS (Homebrew)
 brew install php wget
 ```
+
 > `unzip` is no longer required for cloudflared — the script uses `wget` or `curl` directly.
 ### Clone and Run
 ```bash
 git clone https://github.com/Garuda-Netra/NetraX
 cd NetraX
+chmod +x cloudflared
+chmod +x netraX.sh
 bash netraX.sh
 ```
 ---
@@ -123,6 +134,7 @@ bash netraX.sh
 ```bash
 bash netraX.sh
 ```
+
 On launch the tool will walk you through a short menu:
 1. **Choose a tunnel** — `[01] Ngrok` or `[02] CloudFlare Tunnel`
 2. **Choose a decoy template** — Season's Greetings, YouTube Streaming, or Online Conference
@@ -132,9 +144,7 @@ The tool then:
 - Launches the tunnel and waits up to 30 seconds for a public URL
 - Prints the shareable link — send it to your test target
 - Listens and prints captured IP, camera images, and GPS data as they arrive
-### Example: Running with Cloudflare Tunnel
-```bash
-bash netraX.sh
+
 
 # When prompted:
 #   Choose a Port Forwarding option: 2        <- select CloudFlare Tunnel
@@ -148,67 +158,19 @@ The script will output something like:
 [+] Waiting for tunnel URL (up to 30s)...
 [*] Direct link: https://some-random-name.trycloudflare.com
 [*] Waiting targets, Press Ctrl + C to exit...
-```
-Copy the `trycloudflare.com` link and send it to your authorized test target.
-### Running the tunnel manually (for debugging)
-If you want to test the tunnel outside of NetraX:
-```bash
-# Make sure PHP is running first
-php -S 127.0.0.1:3333 &
-# Then start the tunnel
-./cloudflared tunnel --url http://127.0.0.1:3333
-```
-You will see the public URL printed directly in your terminal.
+
+
 ### Clean Up Logs and Captured Files
 ```bash
+chmod +x cleanup.sh
 bash cleanup.sh
 ```
+
 > Wipes all `.log` files, generated index files, captured `cam*.png` images, all files inside `data/`
 > (ip_logs, location_logs, form submissions, camera captures, event flags), and clears `saved_locations/`.
 ---
-## Gift Request Form
-Each decoy template includes a **"Claim Your Celebration Gift"** section that prompts the target to enter their own details to receive a gift. The form collects:
-| Field | Validation |
-|---|---|
-| Full Name | Required, min. 2 characters |
-| Email Address | Required, valid format |
-| Phone Number | Required, 10-15 digits |
-| **Date of Birth** | Required, valid past date, within 120 years |
-| Aadhaar Number | Required, exactly 12 digits |
-| Delivery Address | Required, min. 10 characters |
-| Gift Message | Optional |
-A notice on the form reads:
-> *"We collect these details only to verify that you are an authorized person. After successful verification, we will proceed with sending your gift."*
-Submitted data is appended to `data/gift_requests.txt`. Validation is enforced on both the client side (inline JS) and server side (`gift_handler.php`). The form is protected by a CSRF token issued by `get_csrf_token.php`.
----
-## Project Structure
-```
-NetraX/
- netraX.sh                   # Main launcher script
- cleanup.sh                  # Cleanup utility (wipes all captured data)
- template.php                # Loading/splash page (IP + location capture)
- index.php                   # Generated entry-point (created at runtime)
- ip.php                      # Records target IP and User-Agent
- post.php                    # Receives and saves captured webcam images
- location.php                # Receives and saves GPS coordinates
- debug_log.php               # Internal debug logger
- gift_handler.php            # Gift form backend: validates and saves submissions
- get_csrf_token.php          # Issues per-session CSRF tokens for the gift form
- GreetingsPortal.html        # Decoy template: Season's Greetings
- LiveStreamYT.html           # Decoy template: YouTube Streaming
- VirtualMeeting.html         # Decoy template: Online Conference
- data/                       # Centralized data store
-     ip_logs.txt             # IP + User-Agent log
-     location_logs.txt       # Master GPS location log
-     location_<ts>.txt       # Per-hit timestamped location files
-     form_submissions.txt    # Gift form submissions
-     other_logs.txt          # Debug / misc logs
-     .flag_ip                # Event flag: new IP hit (auto-deleted)
-     .flag_location          # Event flag: new location (auto-deleted)
-     .flag_cam               # Event flag: new camera capture (auto-deleted)
-     camera_captures/        # Captured webcam images (cam<ts>.png)
-     saved_locations/        # Archived GPS coordinate files
-```
+
+
 ---
 ## Tested Platforms
 | Platform         | Status   |
@@ -221,6 +183,8 @@ NetraX/
 | macOS (M1/M2/M3) | Tested   |
 | Windows (WSL)    | Tested   |
 ---
+
+
 ## Changelog
 | Version | Highlights |
 |---------|------------|
@@ -230,14 +194,12 @@ NetraX/
 | **1.9** | Enhanced CPU architecture detection (ARM, ARM64, x86, x86\_64, Apple Silicon) |
 | **1.8** | Added CloudFlare Tunnel support; removed deprecated Serveo tunnel |
 | **1.7** | Fixed Termux home directory issue; added ARM64 and Apple Silicon support |
-| **1.6** | Fixed ngrok direct link generation |
 | **1.5** | Added Online Conference decoy template |
-| **1.4** | Updated ngrok authtoken handling |
-| **1.3** | Fixed ngrok direct link |
 ---
+
+
 ## Disclaimer
 > **This tool is provided for educational and authorized penetration testing purposes only.**
->
 > - You must have **explicit written permission** from the target system owner before use.
 > - Unauthorized use against any individual or system **is illegal** and may result in criminal prosecution.
 > - The author and contributors accept **no liability** for any misuse, damage, or illegal activity arising from the use of this tool.
