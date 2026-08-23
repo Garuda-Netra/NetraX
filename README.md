@@ -209,7 +209,7 @@ bash cleanup.sh
 ```
 --------------------------------------------------
 NetraX
-Created, Developed & Maintained by GarudaNetra
+Created, Developed & Maintained by Prince Kumar
 GitHub: https://github.com/Garuda-Netra
 --------------------------------------------------
 ```
